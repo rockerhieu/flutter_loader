@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 enum LoaderState {
   init,
   loading,
-  failed,
+  error,
   loaded,
 }
 
@@ -86,7 +86,7 @@ class _LoaderBuilderState extends State<LoaderBuilder>
     } catch (e, s) {
       _error = e;
       _errorStacktrace = s;
-      state = LoaderState.failed;
+      state = LoaderState.error;
     }
     return _data;
   }
@@ -178,7 +178,7 @@ class DefaultLoaderBuilder extends StatelessWidget {
     switch (controller.state) {
       case LoaderState.loading:
         return loadingBuilder?.call(context) ?? _defaultLoadingWidget(context);
-      case LoaderState.failed:
+      case LoaderState.error:
         return errorBuilder?.call(context) ?? _defaultErrorWidget(context);
       case LoaderState.loaded:
         return loadedBuilder?.call(context) ?? _defaultLoadedWidget(context);
