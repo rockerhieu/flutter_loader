@@ -38,4 +38,5 @@ DefaultLoaderBuilder(
 - **loaded**: show a text message displaying the loaded data
 
 You can optional provide `initBuilder`, `loadingBuilder`, `errorBuilder`, `loadedBuilder` to
-customize the UI for each of the above states.
+customize the UI for each of the above states. You can also customize the style of
+`DefaultLoaderBuilder` by wrapping the tree with `DefaultLoaderThemeData`

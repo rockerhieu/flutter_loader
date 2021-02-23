@@ -237,6 +237,7 @@ class DefaultLoaderBuilder extends StatelessWidget {
 
 class DefaultLoaderThemeData extends InheritedWidget {
   const DefaultLoaderThemeData({
+    Widget child,
     this.loadingIndicatorSize = 40.0,
     this.errorSpacing = 10.0,
     this.errorLayoutDirection = Axis.vertical,
@@ -244,7 +245,7 @@ class DefaultLoaderThemeData extends InheritedWidget {
     this.showRetryWhenError = true,
     this.retryLabel = 'Retry',
     this.transitionDuration = const Duration(milliseconds: 250),
-  });
+  }) : super(child: child);
 
   final double loadingIndicatorSize;
   final double errorSpacing;

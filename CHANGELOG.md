@@ -6,3 +6,4 @@
 ## [0.0.2]
 
 * Rename `LoaderState.failed` to `LoaderState.error`
+* Customize `DefaultLoaderBuilder` via `DefaultLoaderThemeData`
