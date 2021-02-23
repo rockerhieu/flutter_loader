@@ -1,6 +1,6 @@
 name: flutter_loader
 description: Provides widget for implementing UI with multiple states, i.e init, loading, error, loaded.
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/rockerhieu/flutter_loader
 
 environment:

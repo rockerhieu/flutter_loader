@@ -26,6 +26,10 @@ class LoaderDemo extends StatelessWidget {
         title: Text('Flutter Loader Demo'),
       ),
       body: DefaultLoaderBuilder(
+        themeData: DefaultLoaderThemeData(
+          errorMessageResolver: (error) =>
+              'Custom errorMessageResolver: $error',
+        ),
         loader: () => Future.delayed(
           Duration(seconds: 3),
           () => 'Hello World',

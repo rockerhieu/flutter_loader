@@ -135,6 +135,7 @@ class DefaultLoaderBuilder extends StatelessWidget {
   final WidgetBuilder loadingBuilder;
   final WidgetBuilder errorBuilder;
   final WidgetBuilder loadedBuilder;
+  final DefaultLoaderThemeData themeData;
 
   DefaultLoaderBuilder({
     Key key,
@@ -143,30 +144,34 @@ class DefaultLoaderBuilder extends StatelessWidget {
     this.loadingBuilder,
     this.errorBuilder,
     this.loadedBuilder,
+    this.themeData,
   }) : super(key: key) {
     assert(loader != null, 'loader must not be null');
   }
 
   @override
   Widget build(_) {
-    return LoaderBuilder(
-      loader: loader,
-      builder: (context, controller, widget) => widget,
-      child: Builder(
-        builder: (context) {
-          final controller = LoaderController.of(context);
-          final themeData = DefaultLoaderThemeData.of(context);
-          if (themeData.transitionDuration.inMilliseconds == 0)
-            return _buildContent(context, controller);
+    return _DefaultLoaderTheme(
+      themeData: themeData,
+      child: LoaderBuilder(
+        loader: loader,
+        builder: (context, controller, widget) => widget,
+        child: Builder(
+          builder: (context) {
+            final controller = LoaderController.of(context);
+            final themeData = DefaultLoaderThemeData.of(context);
+            if (themeData.transitionDuration.inMilliseconds == 0)
+              return _buildContent(context, controller);
 
-          return AnimatedSwitcher(
-            duration: themeData.transitionDuration,
-            child: Container(
-              key: UniqueKey(),
-              child: _buildContent(context, controller),
-            ),
-          );
-        },
+            return AnimatedSwitcher(
+              duration: themeData.transitionDuration,
+              child: Container(
+                key: UniqueKey(),
+                child: _buildContent(context, controller),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -235,7 +240,17 @@ class DefaultLoaderBuilder extends StatelessWidget {
   }
 }
 
-class DefaultLoaderThemeData extends InheritedWidget {
+class _DefaultLoaderTheme extends InheritedWidget {
+  final DefaultLoaderThemeData themeData;
+
+  const _DefaultLoaderTheme({Widget child, this.themeData})
+      : super(child: child);
+
+  @override
+  bool updateShouldNotify(covariant InheritedWidget oldWidget) => true;
+}
+
+class DefaultLoaderThemeData {
   const DefaultLoaderThemeData({
     Widget child,
     this.loadingIndicatorSize = 40.0,
@@ -245,7 +260,7 @@ class DefaultLoaderThemeData extends InheritedWidget {
     this.showRetryWhenError = true,
     this.retryLabel = 'Retry',
     this.transitionDuration = const Duration(milliseconds: 250),
-  }) : super(child: child);
+  });
 
   final double loadingIndicatorSize;
   final double errorSpacing;
@@ -255,11 +270,10 @@ class DefaultLoaderThemeData extends InheritedWidget {
   final String retryLabel;
   final Duration transitionDuration;
 
-  @override
-  bool updateShouldNotify(covariant InheritedWidget oldWidget) => true;
-
   static DefaultLoaderThemeData of(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<DefaultLoaderThemeData>() ??
+      context
+          .dependOnInheritedWidgetOfExactType<_DefaultLoaderTheme>()
+          ?.themeData ??
       defaultData;
 
   static const defaultData = DefaultLoaderThemeData();
