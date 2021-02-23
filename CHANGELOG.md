@@ -7,3 +7,7 @@
 
 * Rename `LoaderState.failed` to `LoaderState.error`
 * Customize `DefaultLoaderBuilder` via `DefaultLoaderThemeData`
+
+## [0.0.3]
+
+* Fix tests
