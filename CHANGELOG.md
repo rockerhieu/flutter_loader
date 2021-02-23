@@ -11,3 +11,7 @@
 ## [0.0.3]
 
 * Fix tests
+
+## [0.1.0]
+
+* Add documentations
