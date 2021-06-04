@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('flutter_loader', () {
     testWidgets('LoaderBuilder', (tester) async {
-      LoaderController loaderController;
+      late LoaderController loaderController;
       int count = 0;
       final futures = <Future Function()>[
         () => Future.value('Hello World'),
@@ -19,7 +19,7 @@ void main() {
                     Future.delayed(Duration(seconds: 1), futures[count++]),
                 builder: (context, controller, widget) {
                   loaderController = controller;
-                  return FlatButton(
+                  return TextButton(
                     child: Text('${controller.data}'),
                     onPressed: () => controller.load(),
                   );

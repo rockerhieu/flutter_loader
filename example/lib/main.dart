@@ -35,21 +35,22 @@ class LoaderDemo extends StatelessWidget {
           () => 'Hello World',
         ),
         loadedBuilder: (context) {
+          final controller = LoaderController.of(context)!;
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('${LoaderController.of(context).data}'),
+                Text('${controller.data}'),
                 SizedBox(height: 10),
-                RaisedButton(
-                  onPressed: () => LoaderController.of(context).load(
+                ElevatedButton(
+                  onPressed: () => controller.load(
                     () => Future.delayed(
                         Duration(seconds: 3), () => Future.error('Oops')),
                   ),
                   child: Text('Error'),
                 ),
-                RaisedButton(
-                  onPressed: () => LoaderController.of(context).load(),
+                ElevatedButton(
+                  onPressed: () => controller.load(),
                   child: Text('Success'),
                 ),
               ],

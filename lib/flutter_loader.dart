@@ -19,6 +19,4 @@
 /// use [LoaderBuilder].
 library flutter_loader;
 
-import 'package:flutter_loader/src/loader.dart';
-
 export 'src/loader.dart';

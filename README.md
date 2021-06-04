@@ -1,6 +1,6 @@
 # flutter_loader
 
-![Latest version on pub.dev](https://shields.io/pub/v/flutter_loader)
+[![Latest version on pub.dev](https://shields.io/pub/v/flutter_loader)](https://pub.dev/packages/flutter_loader)
 
 A Flutter package for simplifying resource loading.
 

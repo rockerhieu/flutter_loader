@@ -39,7 +39,7 @@ typedef FutureProvider = Future<dynamic> Function();
 /// [LoaderController] and [Widget]. The given [Widget] is provided via
 /// [LoaderBuilder.child] for caching purpose.
 typedef LoaderWidgetBuilder = Widget Function(
-    BuildContext, LoaderController, Widget);
+    BuildContext, LoaderController, Widget?);
 
 /// A [Widget] that replace its content with different widgets depends on the
 /// state of the loader.
@@ -57,7 +57,7 @@ typedef LoaderWidgetBuilder = Widget Function(
 ///       builder: (context, controller, child) {
 ///         switch(controller.state) {
 ///           case LoaderState.error:
-///             return RaisedButton(
+///             return ElevatedButton(
 ///               child: 'Error: ${controller.error}.\n\nClick here to try again',
 ///               onPressed: () => controller.load(),
 ///             );
@@ -82,15 +82,15 @@ class LoaderBuilder extends StatefulWidget {
   final LoaderWidgetBuilder builder;
 
   /// The child widget which will be used by [builder] for caching purpose.
-  final Widget child;
+  final Widget? child;
 
   /// Whether the loader will load the data automatically in the beginning
   final bool autoLoad;
 
   LoaderBuilder({
-    Key key,
-    @required this.loader,
-    @required this.builder,
+    Key? key,
+    required this.loader,
+    required this.builder,
     this.child,
     this.autoLoad = true,
   }) : super(key: key);
@@ -129,29 +129,28 @@ abstract class LoaderController {
 
   /// Stacktrace of the error that has happened while loading data. This data
   /// will be cleared when [load] is called.
-  dynamic get errorStacktrace;
+  StackTrace? get errorStacktrace;
 
   /// Whether there has been an error while loading data.
   bool get hasError;
 
   /// Retrieves the [LoaderController] in the closest ancestor element.
-  static LoaderController of(BuildContext context) {
-    final scope =
-        context.dependOnInheritedWidgetOfExactType<_LoaderControllerScope>();
-    return scope?.controller;
-  }
+  static LoaderController? of(BuildContext? context) => context
+      ?.dependOnInheritedWidgetOfExactType<_LoaderControllerScope>()
+      ?.controller;
 }
 
 class _LoaderBuilderState extends State<LoaderBuilder>
     implements LoaderController {
-  var _state = LoaderState.init;
+  late LoaderState _state = LoaderState.init;
 
   dynamic _data;
 
   dynamic get data => _data;
 
-  var _error;
-  StackTrace _errorStacktrace;
+  dynamic _error;
+
+  StackTrace? _errorStacktrace;
 
   @override
   LoaderState get state => _state;
@@ -163,7 +162,7 @@ class _LoaderBuilderState extends State<LoaderBuilder>
   }
 
   @override
-  Future<dynamic> load([Future<dynamic> Function() resource]) async {
+  Future<dynamic> load([Future<dynamic> Function()? resource]) async {
     if (_state == LoaderState.loading) return null;
 
     _error = null;
@@ -185,7 +184,7 @@ class _LoaderBuilderState extends State<LoaderBuilder>
   dynamic get error => _error;
 
   @override
-  StackTrace get errorStacktrace => _errorStacktrace;
+  StackTrace? get errorStacktrace => _errorStacktrace;
 
   @override
   bool get hasError => _error != null;
@@ -211,8 +210,8 @@ class _LoaderControllerScope extends InheritedWidget {
   final LoaderController controller;
 
   _LoaderControllerScope({
-    @required this.controller,
-    @required Widget child,
+    required this.controller,
+    required Widget child,
   }) : super(child: child);
 
   @override
@@ -249,14 +248,14 @@ class _LoaderControllerScope extends InheritedWidget {
 ///             children: [
 ///               Text('${LoaderController.of(context).data}'),
 ///               SizedBox(height: 10),
-///               RaisedButton(
+///               ElevatedButton(
 ///                 onPressed: () => LoaderController.of(context).load(
 ///                       () => Future.delayed(
 ///                       Duration(seconds: 3), () => Future.error('Oops')),
 ///                 ),
 ///                 child: Text('Error'),
 ///               ),
-///               RaisedButton(
+///               ElevatedButton(
 ///                 onPressed: () => LoaderController.of(context).load(),
 ///                 child: Text('Success'),
 ///               ),
@@ -274,33 +273,31 @@ class DefaultLoaderBuilder extends StatelessWidget {
   final FutureProvider loader;
 
   /// Builds widget for the state of [LoaderState.init]. Omit to use [defaultInitWidget].
-  final WidgetBuilder initBuilder;
+  final WidgetBuilder? initBuilder;
 
   /// Builds widget for the state of [LoaderState.loading]. Omit to use [defaultLoadingWidget].
-  final WidgetBuilder loadingBuilder;
+  final WidgetBuilder? loadingBuilder;
 
   /// Builds widget for the state of [LoaderState.error]. Omit to use [defaultErrorWidget].
-  final WidgetBuilder errorBuilder;
+  final WidgetBuilder? errorBuilder;
 
   /// Builds widget for the state of [LoaderState.loaded]. Omit to use [defaultLoadedWidget].
-  final WidgetBuilder loadedBuilder;
+  final WidgetBuilder? loadedBuilder;
 
   /// Visual configuration for the default UI implementations.
-  final DefaultLoaderThemeData themeData;
+  final DefaultLoaderThemeData? themeData;
 
   /// Creates a [DefaultLoaderBuilder] to handle resource loading using [loader]
   /// and show according UI for different state.
   DefaultLoaderBuilder({
-    Key key,
-    @required this.loader,
+    Key? key,
+    required this.loader,
     this.initBuilder,
     this.loadingBuilder,
     this.errorBuilder,
     this.loadedBuilder,
     this.themeData,
-  }) : super(key: key) {
-    assert(loader != null, 'loader must not be null');
-  }
+  }) : super(key: key);
 
   @override
   Widget build(_) {
@@ -308,10 +305,10 @@ class DefaultLoaderBuilder extends StatelessWidget {
       themeData: themeData,
       child: LoaderBuilder(
         loader: loader,
-        builder: (context, controller, widget) => widget,
+        builder: (context, controller, widget) => widget!,
         child: Builder(
           builder: (context) {
-            final controller = LoaderController.of(context);
+            final controller = LoaderController.of(context)!;
             final themeData = DefaultLoaderThemeData.of(context);
             if (themeData.transitionDuration.inMilliseconds == 0)
               return _buildContent(context, controller);
@@ -364,7 +361,7 @@ class DefaultLoaderBuilder extends StatelessWidget {
 
   /// Default UI for [LoaderState.error].
   static Widget defaultErrorWidget(BuildContext context) {
-    final controller = LoaderController.of(context);
+    final controller = LoaderController.of(context)!;
     final themeData = DefaultLoaderThemeData.of(context);
     return Center(
       child: Column(
@@ -377,7 +374,7 @@ class DefaultLoaderBuilder extends StatelessWidget {
           if (themeData.showRetryWhenError)
             SizedBox(height: themeData.errorSpacing),
           if (themeData.showRetryWhenError)
-            RaisedButton(
+            ElevatedButton(
               onPressed: () => controller.load(),
               child: Text(themeData.retryLabel),
             )
@@ -388,7 +385,7 @@ class DefaultLoaderBuilder extends StatelessWidget {
 
   /// Default UI for [LoaderState.loaded].
   static Widget defaultLoadedWidget(BuildContext context) {
-    final controller = LoaderController.of(context);
+    final controller = LoaderController.of(context)!;
     return Center(
         child: Text(
       '${controller.data}',
@@ -398,9 +395,9 @@ class DefaultLoaderBuilder extends StatelessWidget {
 }
 
 class _DefaultLoaderTheme extends InheritedWidget {
-  final DefaultLoaderThemeData themeData;
+  final DefaultLoaderThemeData? themeData;
 
-  const _DefaultLoaderTheme({Widget child, this.themeData})
+  const _DefaultLoaderTheme({required Widget child, this.themeData})
       : super(child: child);
 
   @override
@@ -411,7 +408,6 @@ class _DefaultLoaderTheme extends InheritedWidget {
 /// [DefaultLoaderBuilder].
 class DefaultLoaderThemeData {
   const DefaultLoaderThemeData({
-    Widget child,
     this.loadingIndicatorSize = 40.0,
     this.errorSpacing = 10.0,
     this.errorLayoutDirection = Axis.vertical,
@@ -453,9 +449,9 @@ class DefaultLoaderThemeData {
   final Duration transitionDuration;
 
   /// Retrieves the [DefaultLoaderThemeData] in the closest ancestor element.
-  static DefaultLoaderThemeData of(BuildContext context) =>
+  static DefaultLoaderThemeData of(BuildContext? context) =>
       context
-          .dependOnInheritedWidgetOfExactType<_DefaultLoaderTheme>()
+          ?.dependOnInheritedWidgetOfExactType<_DefaultLoaderTheme>()
           ?.themeData ??
       defaultData;
 
@@ -468,7 +464,7 @@ typedef ErrorMessageResolver = String Function(dynamic error);
 
 /// The default [ErrorMessageResolver].
 String defaultErrorMessageResolver(dynamic error) {
-  String message;
+  String? message;
   try {
     message = error.message;
   } catch (e) {}

@@ -15,3 +15,15 @@
 ## [0.1.0]
 
 * Add documentations
+
+## [0.1.1]
+
+* Migrate RaisedButton to ElevatedButton
+
+## [0.1.2]
+
+* Update pubspec.yaml description as suggested by pub.dev score
+
+## [0.2.0]
+
+* Support null safety
