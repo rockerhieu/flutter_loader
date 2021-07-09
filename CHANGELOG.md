@@ -27,3 +27,7 @@
 ## [0.2.0]
 
 * Support null safety
+
+## [0.2.1]
+
+* Avoid calling `setState()` after the widget is disposed

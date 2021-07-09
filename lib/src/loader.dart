@@ -156,9 +156,11 @@ class _LoaderBuilderState extends State<LoaderBuilder>
   LoaderState get state => _state;
 
   set state(LoaderState newValue) {
-    setState(() {
-      _state = newValue;
-    });
+    if (this.mounted) {
+      setState(() {
+        _state = newValue;
+      });
+    }
   }
 
   @override
