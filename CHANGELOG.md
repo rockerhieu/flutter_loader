@@ -31,3 +31,7 @@
 ## [0.2.1]
 
 * Avoid calling `setState()` after the widget is disposed
+
+## [0.2.2]
+
+* Expose `autoLoad` parameter for `DefaultLoaderBuilder`

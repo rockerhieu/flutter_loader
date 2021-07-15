@@ -289,6 +289,9 @@ class DefaultLoaderBuilder extends StatelessWidget {
   /// Visual configuration for the default UI implementations.
   final DefaultLoaderThemeData? themeData;
 
+  /// Whether the loader will load the data automatically in the beginning
+  final bool autoLoad;
+
   /// Creates a [DefaultLoaderBuilder] to handle resource loading using [loader]
   /// and show according UI for different state.
   DefaultLoaderBuilder({
@@ -299,6 +302,7 @@ class DefaultLoaderBuilder extends StatelessWidget {
     this.errorBuilder,
     this.loadedBuilder,
     this.themeData,
+    this.autoLoad = true,
   }) : super(key: key);
 
   @override
@@ -307,6 +311,7 @@ class DefaultLoaderBuilder extends StatelessWidget {
       themeData: themeData,
       child: LoaderBuilder(
         loader: loader,
+        autoLoad: autoLoad,
         builder: (context, controller, widget) => widget!,
         child: Builder(
           builder: (context) {
