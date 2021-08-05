@@ -39,3 +39,7 @@
 ## [0.2.3]
 
 * Add `onControllerCreated` callback for `DefaultLoaderBuilder`
+
+## [0.2.4]
+
+* Add `onError` callback for `DefaultLoaderBuilder`

@@ -292,6 +292,9 @@ class DefaultLoaderBuilder extends StatelessWidget {
   /// Callback function which will be called right after the controller is created.
   final void Function(LoaderController controller)? onControllerCreated;
 
+  /// Callback function which will be called when the error occurs.
+  final void Function(dynamic error, StackTrace stackTrace)? onError;
+
   /// Whether the loader will load the data automatically in the beginning
   final bool autoLoad;
 
@@ -305,6 +308,7 @@ class DefaultLoaderBuilder extends StatelessWidget {
     this.errorBuilder,
     this.loadedBuilder,
     this.onControllerCreated,
+    this.onError,
     this.themeData,
     this.autoLoad = true,
   }) : super(key: key);
@@ -346,6 +350,7 @@ class DefaultLoaderBuilder extends StatelessWidget {
       case LoaderState.loading:
         return loadingBuilder?.call(context) ?? defaultLoadingWidget(context);
       case LoaderState.error:
+        onError?.call(controller.error!, controller.errorStacktrace!);
         return errorBuilder?.call(context) ?? defaultErrorWidget(context);
       case LoaderState.loaded:
         return loadedBuilder?.call(context) ?? defaultLoadedWidget(context);
