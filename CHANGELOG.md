@@ -35,3 +35,7 @@
 ## [0.2.2]
 
 * Expose `autoLoad` parameter for `DefaultLoaderBuilder`
+
+## [0.2.3]
+
+* Add `onControllerCreated` callback for `DefaultLoaderBuilder`

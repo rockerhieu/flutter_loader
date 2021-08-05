@@ -289,6 +289,9 @@ class DefaultLoaderBuilder extends StatelessWidget {
   /// Visual configuration for the default UI implementations.
   final DefaultLoaderThemeData? themeData;
 
+  /// Callback function which will be called right after the controller is created.
+  final void Function(LoaderController controller)? onControllerCreated;
+
   /// Whether the loader will load the data automatically in the beginning
   final bool autoLoad;
 
@@ -301,6 +304,7 @@ class DefaultLoaderBuilder extends StatelessWidget {
     this.loadingBuilder,
     this.errorBuilder,
     this.loadedBuilder,
+    this.onControllerCreated,
     this.themeData,
     this.autoLoad = true,
   }) : super(key: key);
@@ -316,6 +320,7 @@ class DefaultLoaderBuilder extends StatelessWidget {
         child: Builder(
           builder: (context) {
             final controller = LoaderController.of(context)!;
+            onControllerCreated?.call(controller);
             final themeData = DefaultLoaderThemeData.of(context);
             if (themeData.transitionDuration.inMilliseconds == 0)
               return _buildContent(context, controller);
