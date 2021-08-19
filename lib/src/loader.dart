@@ -381,15 +381,20 @@ class DefaultLoaderBuilder extends StatelessWidget {
     final controller = LoaderController.of(context)!;
     final themeData = DefaultLoaderThemeData.of(context);
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        direction: themeData.errorLayoutDirection,
         children: [
           Text(
             themeData.errorMessageResolver.call(controller.error),
             textAlign: TextAlign.center,
           ),
           if (themeData.showRetryWhenError)
-            SizedBox(height: themeData.errorSpacing),
+            SizedBox(
+              height: themeData.errorSpacing,
+              width: themeData.errorSpacing,
+            ),
           if (themeData.showRetryWhenError)
             ElevatedButton(
               onPressed: () => controller.load(),

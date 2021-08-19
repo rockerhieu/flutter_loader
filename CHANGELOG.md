@@ -43,3 +43,7 @@
 ## [0.2.4]
 
 * Add `onError` callback for `DefaultLoaderBuilder`
+
+## [0.2.5]
+
+* Fix the issue that causes `DefaultLoaderThemeData.errorLayoutDirection` to not working as expected
