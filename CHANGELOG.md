@@ -47,3 +47,7 @@
 ## [0.2.5]
 
 * Fix the issue that causes `DefaultLoaderThemeData.errorLayoutDirection` to not working as expected
+
+## [0.2.6]
+
+* Only show transition animation where there is a loader state change

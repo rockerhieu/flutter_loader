@@ -1,6 +1,6 @@
 name: flutter_loader
 description: A Flutter package for simplifying resource loading with customizable UI
-version: 0.2.5
+version: 0.2.6
 homepage: https://github.com/rockerhieu/flutter_loader
 
 environment:
