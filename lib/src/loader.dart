@@ -14,7 +14,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 /// State of the loader in its lifecycle:
 /// [init] -> [loading] <-> [error] or [loaded]
@@ -332,7 +331,7 @@ class DefaultLoaderBuilder extends StatelessWidget {
             return AnimatedSwitcher(
               duration: themeData.transitionDuration,
               child: Container(
-                key: UniqueKey(),
+                key: ValueKey<LoaderState>(controller.state),
                 child: _buildContent(context, controller),
               ),
             );
